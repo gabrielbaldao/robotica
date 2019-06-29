@@ -260,6 +260,24 @@ def para():
     MotorDireita().alterarPWM(0)
     MotorEsquerda().alteraPWM(0)
 
+def sentido(var):
+    global pwmAglobal, pwmBglobal
+    sentidoMotor(MotorDireita(), var, pwmAglobal)
+    sentidoMotor(MotorEsquerda(), not var, pwmBglobal)
+    # MotorDireita().sentido(var)
+    # MotorDireita().aceleracao()
+    # MotorDireita().alterarPWM(pwmBglobal)
+    # MotorDireita().setMovimento(True)
+
+    # MotorEsquerda().sentido(not var)
+    # MotorEsquerda().aceleracao()
+    # MotorEsquerda().alterarPWM(pwmBglobal)
+    # MotorEsquerda().setMovimento(True)
+def sentidoMotor(motor, var, pwm):
+    motor.sentido(not var)
+    motor.aceleracao()
+    motor.alterarPWM(pwm)
+    motor.setMovimento(True)
 try:
     stdscr = curses.initscr()
     curses.cbreak()
@@ -272,9 +290,11 @@ try:
             # avancar()
             print(pwmAglobal)
             print(pwmBglobal)
+            sentido(True)
             print('frente')
         elif c == ord('s'):
             # voltar()
+            sentido(False)
             print('tras')
         elif c == ord('a'):
             esquerda()
