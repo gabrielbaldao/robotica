@@ -121,6 +121,7 @@ MotorDireita().iniciar()
 
 
 def avancar():
+    global pwmAglobal, pwmBglobal
     if pwmAglobal < 100:
         pwmAglobal+=5
         MotorDireita().alterarPWM(pwmAglobal)
@@ -129,6 +130,7 @@ def avancar():
         # MotorEsquerda().alterarPWM(pwmBglobal)
 
 def voltar():
+    global pwmAglobal, pwmBglobal
     if pwmAglobal > 0:
         pwmAglobal-=5
         MotorDireita().alterarPWM(pwmAglobal)
@@ -137,6 +139,7 @@ def voltar():
         # MotorEsquerda().alterarPWM(pwmBglobal)
 
 def esquerda():
+    global pwmAglobal, pwmBglobal
     if pwmAglobal < 100:
         pwmAglobal+=10
         MotorDireita().alterarPWM(pwmAglobal)
@@ -145,6 +148,7 @@ def esquerda():
         # MotorEsquerda().alterarPWM(pwmBglobal)
 
 def direita():
+    global pwmAglobal, pwmBglobal
     if pwmAglobal > 0:
         pwmAglobal-=10
         MotorDireita().alterarPWM(pwmAglobal)
@@ -152,6 +156,7 @@ def direita():
         pwmBglobal+=10
         # MotorEsquerda().alterarPWM(pwmBglobal)
 def para():
+    global pwmAglobal, pwmBglobal
     MotorDireita().alterarPWM(0)
     # MotorEsquerda().alteraPWM(0)
 
