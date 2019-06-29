@@ -231,7 +231,7 @@ def esquerda():
     pwmBglobal = igual
     
     if pwmAglobal < 100:
-        pwmAglobal+=esquerdaContador*10 if esquerdaContador*10 < 100 else 100
+        pwmAglobal=pwmAglobal+esquerdaContador*10 if pwmAglobal+esquerdaContador*10 < 100 else 100
         MotorDireita().alterarPWM(pwmAglobal)
     if pwmBglobal > 0:
         pwmBglobal-=10
@@ -250,7 +250,7 @@ def direita():
         pwmAglobal-=10
         MotorDireita().alterarPWM(pwmAglobal)
     if pwmBglobal < 100:
-        pwmBglobal+=direitaContador*10 if direitaContador*10 < 100 else 100
+        pwmBglobal= pwmBglobal+direitaContador*10 if pwmBglobal+direitaContador*10 < 100 else 100
         MotorEsquerda().alterarPWM(pwmBglobal)
     direitaContador +=1
     esquerdaContador = 1
