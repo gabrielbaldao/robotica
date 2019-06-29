@@ -197,7 +197,8 @@ class MotorEsquerda():
             MotorEsquerda().alterarPWM(pwmAglobal)
 
 MotorEsquerda().iniciar()
-
+esquerdaContador = 1
+direitaContador = 1
 
 def maior(valor1, valor2):
     if valor1 > valor2:
@@ -227,12 +228,15 @@ def esquerda():
     igual = maior(pwmAglobal, pwmBglobal)
     pwmAglobal = igual
     pwmBglobal = igual
+    
     if pwmAglobal < 100:
-        pwmAglobal+=10
+        pwmAglobal+=esquerdaContador*10
         MotorDireita().alterarPWM(pwmAglobal)
     if pwmBglobal > 0:
         pwmBglobal-=10
         MotorEsquerda().alterarPWM(pwmBglobal)
+    esquerdaContador += 1
+    direitaContador =1
 
 def direita():
     global pwmAglobal, pwmBglobal
@@ -244,8 +248,10 @@ def direita():
         pwmAglobal-=10
         MotorDireita().alterarPWM(pwmAglobal)
     if pwmBglobal < 100:
-        pwmBglobal+=10
+        pwmBglobal+=direitaContador*10
         MotorEsquerda().alterarPWM(pwmBglobal)
+    direitaContador +=1
+    esquerdaContador = 1
 def para():
     global pwmAglobal, pwmBglobal
     MotorDireita().alterarPWM(0)
