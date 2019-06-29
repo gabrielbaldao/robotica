@@ -237,6 +237,7 @@ def esquerda():
 def direita():
     global pwmAglobal, pwmBglobal
     igual = maior(pwmAglobal, pwmBglobal)
+    print(igual)
     pwmAglobal = igual
     pwmBglobal = igual
     if pwmAglobal > 0:
