@@ -202,7 +202,7 @@ MotorEsquerda().iniciar()
 def maior(valor1, valor2):
     if valor1 > valor2:
         return valor1
-    valor2
+    return valor2
 
 def avancar():
     global pwmAglobal, pwmBglobal
