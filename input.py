@@ -226,7 +226,7 @@ def voltar():
 def esquerda():
     global pwmAglobal, pwmBglobal
     global esquerdaContador, direitaContador
-    if esquerdaContador > 1:
+    if esquerdaContador == 1:
         igual = maior(pwmAglobal, pwmBglobal)
         pwmAglobal = igual
         pwmBglobal = igual
@@ -243,7 +243,7 @@ def esquerda():
 def direita():
     global pwmAglobal, pwmBglobal
     global esquerdaContador, direitaContador
-    if direitaContador > 1:
+    if direitaContador == 1:
         igual = maior(pwmAglobal, pwmBglobal)
         pwmAglobal = igual
         pwmBglobal = igual
