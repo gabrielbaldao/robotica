@@ -226,9 +226,10 @@ def voltar():
 def esquerda():
     global pwmAglobal, pwmBglobal
     global esquerdaContador, direitaContador
-    igual = maior(pwmAglobal, pwmBglobal)
-    pwmAglobal = igual
-    pwmBglobal = igual
+    if esquerdaContador > 1:
+        igual = maior(pwmAglobal, pwmBglobal)
+        pwmAglobal = igual
+        pwmBglobal = igual
     
     if pwmAglobal < 100:
         pwmAglobal=pwmAglobal+esquerdaContador*10 if pwmAglobal+esquerdaContador*10 < 100 else 100
@@ -242,10 +243,10 @@ def esquerda():
 def direita():
     global pwmAglobal, pwmBglobal
     global esquerdaContador, direitaContador
-    igual = maior(pwmAglobal, pwmBglobal)
-    print(igual)
-    pwmAglobal = igual
-    pwmBglobal = igual
+    if direitaContador > 1:
+        igual = maior(pwmAglobal, pwmBglobal)
+        pwmAglobal = igual
+        pwmBglobal = igual
     if pwmAglobal > 0:
         pwmAglobal-=10
         MotorDireita().alterarPWM(pwmAglobal)
