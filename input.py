@@ -225,6 +225,7 @@ def voltar():
 
 def esquerda():
     global pwmAglobal, pwmBglobal
+    global esquerdaContador, direitaContador
     igual = maior(pwmAglobal, pwmBglobal)
     pwmAglobal = igual
     pwmBglobal = igual
@@ -240,6 +241,7 @@ def esquerda():
 
 def direita():
     global pwmAglobal, pwmBglobal
+    global esquerdaContador, direitaContador
     igual = maior(pwmAglobal, pwmBglobal)
     print(igual)
     pwmAglobal = igual
