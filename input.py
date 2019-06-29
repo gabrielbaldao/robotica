@@ -11,6 +11,8 @@ GPIO.setwarnings(False)
 
 pinoMotorA = 17
 pinoMotorA1 = 18
+pwmAglobal = 50
+pwmBglobal = 50
 pinoMotorB = 22
 pinoMotorB1 = 23
 frequencia = 1000
@@ -31,19 +33,18 @@ pwm3.start(0)
 pwm4.start(0)
 
 
-class Motor():
+class MotorDireita():
     motor = None
 
     def __new__(cls, *args, **kwargs):
         if not cls.motor:
-            cls.motor = super(Motor, cls).__new__(cls, *args, **kwargs)
+            cls.motor = super(MotorDireita, cls).__new__(cls, *args, **kwargs)
         return cls.motor
 
     def __init__(self):
         self.ptk = 0
 
     def iniciar(self):
-        self.motorPode = True
         self.sentidoFrente = False
         self.rpm = 0
         self.zerarValores()
@@ -66,11 +67,10 @@ class Motor():
     def setMovimento(self, valor):
         self.emMovimento = valor
     def alterarRPM(self, valor, tagDestino):
-        global ultimaTag
         print("saiu for")
         # time.sleep(10)
         print("vai while")
-        while self.rpm < valor and self.valorPWMAtual < 100 and not (ultimaTag in tagDestino) and self.motorPode:
+        while self.rpm < valor and self.valorPWMAtual < 100  :
             print(self.valorPWMAtual)
             self.valorPWMAtual += 1
             self.alterarPWM(self.valorPWMAtual)
@@ -106,24 +106,54 @@ class Motor():
             time.sleep(0.001)
             self.zerarValores()
     def pausar(self):
-        Motor().alterarPWM(0)
+        MotorDireita().alterarPWM(0)
     def continuar(self):
-        global pwmGlobal
+        global pwmAglobal
         if(self.emMovimento):
-            print("pwm ligando ", pwmGlobal)
-            Motor().aceleracao()
-            Motor().alterarPWM(pwmGlobal)
+            print("pwm ligando ", pwmAglobal)
+            MotorDireita().aceleracao()
+            MotorDireita().alterarPWM(pwmAglobal)
 
-Motor().iniciar()
-
-
+MotorDireita().iniciar()
 
 
 
 
 
+def avancar():
+    if pwmAglobal < 100:
+        pwmAglobal+=5
+        MotorDireita().alterarPWM(pwmAglobal)
+    if pwmBglobal < 100:
+        pwmBglobal+=5
+        # MotorEsquerda().alterarPWM(pwmBglobal)
 
+def voltar():
+    if pwmAglobal > 0:
+        pwmAglobal-=5
+        MotorDireita().alterarPWM(pwmAglobal)
+    if pwmBglobal > 0:
+        pwmBglobal-=5
+        # MotorEsquerda().alterarPWM(pwmBglobal)
 
+def esquerda():
+    if pwmAglobal < 100:
+        pwmAglobal+=10
+        MotorDireita().alterarPWM(pwmAglobal)
+    if pwmBglobal > 0:
+        pwmBglobal-=10
+        # MotorEsquerda().alterarPWM(pwmBglobal)
+
+def direita():
+    if pwmAglobal > 0:
+        pwmAglobal-=10
+        MotorDireita().alterarPWM(pwmAglobal)
+    if pwmBglobal < 100:
+        pwmBglobal+=10
+        # MotorEsquerda().alterarPWM(pwmBglobal)
+def para():
+    MotorDireita().alterarPWM(0)
+    # MotorEsquerda().alteraPWM(0)
 
 try:
     stdscr = curses.initscr()
@@ -134,17 +164,26 @@ try:
     while 1:
         c = stdscr.getch()
         if c == ord('w'):
+            # avancar()
             print('frente')
         elif c == ord('s'):
+            # voltar()
             print('tras')
         elif c == ord('a'):
+            esquerda()
             print('esquerda')
         elif c == ord('d'):
+            direita()
             print('direita')
         elif c == ord('8'):
+            avancar()
             print('aumenta PWM')
         elif c == ord('2'):
+            voltar()
             print('diminui PWM')
+        elif c == ord('e'):
+
+            print('para')
         elif c == ord('q'):
             exit(0)
         else:
