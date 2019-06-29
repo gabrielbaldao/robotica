@@ -251,6 +251,8 @@ try:
         c = stdscr.getch()
         if c == ord('w'):
             # avancar()
+            print(pwmAglobal)
+            print(pwmBglobal)
             print('frente')
         elif c == ord('s'):
             # voltar()
