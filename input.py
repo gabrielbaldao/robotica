@@ -1,21 +1,21 @@
 import curses
 
 import RPi.GPIO as GPIO
-from threading import Thread
-import _thread
+# from threading import Thread
+# import _thread
 import time
 
-import pygame
-from pygame.locals import *
+# import pygame
+# from pygame.locals import *
 
 
-pygame.init()
+# pygame.init()
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 
 width, height = 1280, 1000
-screen=pygame.display.set_mode((width, height))
+# screen=pygame.display.set_mode((width, height))
 
 pinoMotorA = 17
 pinoMotorA1 = 18
@@ -52,6 +52,10 @@ desligaPorta(pinoMotorB1)
 
 class MotorDireita():
     motor = None
+    sentidoFrente = False
+    rpm = 0
+    valorPWMAtual = 0
+    emMovimento = False
 
     def __new__(cls, *args, **kwargs):
         if not cls.motor:
@@ -133,6 +137,10 @@ class MotorDireita():
 
 class MotorEsquerda():
     motor = None
+    sentidoFrente = False
+    rpm = 0
+    valorPWMAtual = 0
+    emMovimento = False
 
     def __new__(cls, *args, **kwargs):
         if not cls.motor:
