@@ -5,16 +5,26 @@ from threading import Thread
 import _thread
 import time
 
+import pygame
+from pygame.locals import *
+
+
+pygame.init()
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 
+width, height = 1280, 1000
+screen=pygame.display.set_mode((width, height))
+
 pinoMotorA = 17
 pinoMotorA1 = 18
-pwmAglobal = 50
-pwmBglobal = 50
 pinoMotorB = 22
 pinoMotorB1 = 23
+
+pwmAglobal = 50
+pwmBglobal = 50
+
 frequencia = 1000
 
 GPIO.setup(pinoMotorA, GPIO.OUT)
@@ -27,10 +37,17 @@ pwm2 = GPIO.PWM(pinoMotorA1, frequencia)
 pwm1.start(0)
 pwm2.start(0)
 
-pwm3 = GPIO.PWM(pinoMotorB, frequencia)
-pwm4 = GPIO.PWM(pinoMotorB1, frequencia)
-pwm3.start(0)
-pwm4.start(0)
+
+def ligaPorta(porta):
+    GPIO.output(porta, GPIO.HIGH)
+
+def desligaPorta(porta):
+    GPIO.output(porta, GPIO.LOW)
+
+
+desligaPorta(pinoMotorA1)
+desligaPorta(pinoMotorB1)
+
 
 
 class MotorDireita():
@@ -114,7 +131,6 @@ class MotorDireita():
             MotorDireita().aceleracao()
             MotorDireita().alterarPWM(pwmAglobal)
 
-MotorDireita().iniciar()
 class MotorEsquerda():
     motor = None
 
@@ -196,7 +212,9 @@ class MotorEsquerda():
             MotorEsquerda().aceleracao()
             MotorEsquerda().alterarPWM(pwmAglobal)
 
+MotorDireita().iniciar()
 MotorEsquerda().iniciar()
+
 esquerdaContador = 1
 direitaContador = 1
 
@@ -285,36 +303,44 @@ try:
     stdscr.keypad(1)
     stdscr.refresh()
     while 1:
-        c = stdscr.getch()
-        if c == ord('w'):
-            # avancar()
-            print(pwmAglobal)
-            print(pwmBglobal)
-            sentido(True)
-            print('frente')
-        elif c == ord('s'):
-            # voltar()
-            sentido(False)
-            print('tras')
-        elif c == ord('a'):
-            esquerda()
-            print('esquerda')
-        elif c == ord('d'):
-            direita()
-            print('direita')
-        elif c == ord('8'):
-            avancar()
-            print('aumenta PWM')
-        elif c == ord('2'):
-            voltar()
-            print('diminui PWM')
-        elif c == ord('e'):
+        screen.fill(1)
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == K_w:
+                    print("Botao de keydown")
+            if event.type == pygame.KEYUP:
+                if event.ke == K_w:
+                    print("Evento de key up")
+        # c = stdscr.getch()
+        # if c == ord('w'):
+        #     # avancar()
+        #     print(pwmAglobal)
+        #     print(pwmBglobal)
+        #     sentido(True)
+        #     print('frente')
+        # elif c == ord('s'):
+        #     # voltar()
+        #     sentido(False)
+        #     print('tras')
+        # elif c == ord('a'):
+        #     esquerda()
+        #     print('esquerda')
+        # elif c == ord('d'):
+        #     direita()
+        #     print('direita')
+        # elif c == ord('8'):
+        #     avancar()
+        #     print('aumenta PWM')
+        # elif c == ord('2'):
+        #     voltar()
+        #     print('diminui PWM')
+        # elif c == ord('e'):
 
-            print('para')
-        elif c == ord('q'):
-            exit(0)
-        else:
-            print('Comando desconhecido')
+        #     print('para')
+        # elif c == ord('q'):
+        #     exit(0)
+        # else:
+        #     print('Comando desconhecido')
 
 finally:
     curses.nocbreak()
