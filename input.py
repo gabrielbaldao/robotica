@@ -320,7 +320,6 @@ while True:
     time.sleep(2)
 
 
-
 # try:
 #     stdscr = curses.initscr()
 #     curses.cbreak()
