@@ -304,7 +304,14 @@ def sentidoMotor(motor, var, pwm):
     motor.setMovimento(True)
 
 MotorDireita().aceleracao()
+
 MotorEsquerda().aceleracao()
+
+while True:
+    print("Inicio do while")
+    time.sleep(2)
+
+
 
 # try:
 #     stdscr = curses.initscr()
