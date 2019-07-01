@@ -304,43 +304,43 @@ try:
     stdscr.refresh()
     while 1:
         screen.fill(1)
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == K_w:
-                    print("Botao de keydown")
-            if event.type == pygame.KEYUP:
-                if event.ke == K_w:
-                    print("Evento de key up")
-        # c = stdscr.getch()
-        # if c == ord('w'):
-        #     # avancar()
-        #     print(pwmAglobal)
-        #     print(pwmBglobal)
-        #     sentido(True)
-        #     print('frente')
-        # elif c == ord('s'):
-        #     # voltar()
-        #     sentido(False)
-        #     print('tras')
-        # elif c == ord('a'):
-        #     esquerda()
-        #     print('esquerda')
-        # elif c == ord('d'):
-        #     direita()
-        #     print('direita')
-        # elif c == ord('8'):
-        #     avancar()
-        #     print('aumenta PWM')
-        # elif c == ord('2'):
-        #     voltar()
-        #     print('diminui PWM')
-        # elif c == ord('e'):
+        # for event in pygame.event.get():
+        #     if event.type == pygame.KEYDOWN:
+        #         if event.key == K_w:
+        #             print("Botao de keydown")
+        #     if event.type == pygame.KEYUP:
+        #         if event.ke == K_w:
+        #             print("Evento de key up")
+        c = stdscr.getch()
+        if c == ord('w'):
+            # avancar()
+            print(pwmAglobal)
+            print(pwmBglobal)
+            sentido(True)
+            print('frente')
+        elif c == ord('s'):
+            # voltar()
+            sentido(False)
+            print('tras')
+        elif c == ord('a'):
+            esquerda()
+            print('esquerda')
+        elif c == ord('d'):
+            direita()
+            print('direita')
+        elif c == ord('8'):
+            avancar()
+            print('aumenta PWM')
+        elif c == ord('2'):
+            voltar()
+            print('diminui PWM')
+        elif c == ord('e'):
 
-        #     print('para')
-        # elif c == ord('q'):
-        #     exit(0)
-        # else:
-        #     print('Comando desconhecido')
+            print('para')
+        elif c == ord('q'):
+            exit(0)
+        else:
+            print('Comando desconhecido')
 
 finally:
     curses.nocbreak()
