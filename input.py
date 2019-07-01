@@ -18,8 +18,8 @@ width, height = 1280, 1000
 # screen=pygame.display.set_mode((width, height))
 
 pinoMotorA = 17
-pinoMotorA1 = 18
-pinoMotorB = 22
+pinoMotorA1 = 22
+pinoMotorB = 18
 pinoMotorB1 = 23
 
 pwmAglobal = 50
@@ -310,9 +310,10 @@ def sentidoMotor(motor, var, pwm):
     motor.alterarPWM(pwm)
     motor.setMovimento(True)
 
-MotorDireita().aceleracao()
 
 MotorEsquerda().aceleracao()
+MotorDireita().aceleracao()
+
 
 while True:
     print("Inicio do while")
