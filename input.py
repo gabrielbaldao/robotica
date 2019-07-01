@@ -117,9 +117,8 @@ class MotorDireita():
 
     def aceleracao(self):
         for i in range(0, 100, 1):
-            if (self.rpm < 250):
-                self.alterarPWM(i)
-                time.sleep(0.001)
+            self.alterarPWM(i)
+            time.sleep(0.001)
 
     def frenagem(self):
         for i in range(int(self.valorPWMAtual), 0, -1):
@@ -202,9 +201,8 @@ class MotorEsquerda():
 
     def aceleracao(self):
         for i in range(0, 100, 1):
-            if (self.rpm < 250):
-                self.alterarPWM(i)
-                time.sleep(0.001)
+            self.alterarPWM(i)
+            time.sleep(0.001)
 
     def frenagem(self):
         for i in range(int(self.valorPWMAtual), 0, -1):
@@ -304,56 +302,60 @@ def sentidoMotor(motor, var, pwm):
     motor.aceleracao()
     motor.alterarPWM(pwm)
     motor.setMovimento(True)
-try:
-    stdscr = curses.initscr()
-    curses.cbreak()
-    curses.noecho()
-    stdscr.keypad(1)
-    stdscr.refresh()
-    while 1:
-        screen.fill(1)
-        # for event in pygame.event.get():
-        #     if event.type == pygame.KEYDOWN:
-        #         if event.key == K_w:
-        #             print("Botao de keydown")
-        #     if event.type == pygame.KEYUP:
-        #         if event.ke == K_w:
-        #             print("Evento de key up")
-        c = stdscr.getch()
-        if c == ord('w'):
-            # avancar()
-            print(pwmAglobal)
-            print(pwmBglobal)
-            sentido(True)
-            print('frente')
-        elif c == ord('s'):
-            # voltar()
-            sentido(False)
-            print('tras')
-        elif c == ord('a'):
-            esquerda()
-            print('esquerda')
-        elif c == ord('d'):
-            direita()
-            print('direita')
-        elif c == ord('8'):
-            avancar()
-            print('aumenta PWM')
-        elif c == ord('2'):
-            voltar()
-            print('diminui PWM')
-        elif c == ord('e'):
 
-            print('para')
-        elif c == ord('q'):
-            exit(0)
-        else:
-            print('Comando desconhecido')
+MotorDireita().aceleracao()
+MotorEsquerda().aceleracao()
 
-finally:
-    curses.nocbreak()
-    stdscr.keypad(0)
-    curses.echo()
-    curses.endwin()
+# try:
+#     stdscr = curses.initscr()
+#     curses.cbreak()
+#     curses.noecho()
+#     stdscr.keypad(1)
+#     stdscr.refresh()
+#     while 1:
+#         screen.fill(1)
+#         # for event in pygame.event.get():
+#         #     if event.type == pygame.KEYDOWN:
+#         #         if event.key == K_w:
+#         #             print("Botao de keydown")
+#         #     if event.type == pygame.KEYUP:
+#         #         if event.ke == K_w:
+#         #             print("Evento de key up")
+#         c = stdscr.getch()
+#         if c == ord('w'):
+#             # avancar()
+#             print(pwmAglobal)
+#             print(pwmBglobal)
+#             sentido(True)
+#             print('frente')
+#         elif c == ord('s'):
+#             # voltar()
+#             sentido(False)
+#             print('tras')
+#         elif c == ord('a'):
+#             esquerda()
+#             print('esquerda')
+#         elif c == ord('d'):
+#             direita()
+#             print('direita')
+#         elif c == ord('8'):
+#             avancar()
+#             print('aumenta PWM')
+#         elif c == ord('2'):
+#             voltar()
+#             print('diminui PWM')
+#         elif c == ord('e'):
+
+#             print('para')
+#         elif c == ord('q'):
+#             exit(0)
+#         else:
+#             print('Comando desconhecido')
+
+# finally:
+#     curses.nocbreak()
+#     stdscr.keypad(0)
+#     curses.echo()
+#     curses.endwin()
 
 
