@@ -38,6 +38,7 @@ pwm1.start(0)
 pwm2.start(0)
 
 
+
 def ligaPorta(porta):
     GPIO.output(porta, GPIO.HIGH)
 
@@ -101,19 +102,22 @@ class MotorDireita():
 
     def zerarValores(self):
         global pwm1
-        global pwm2
+        # global pwm2
         pwm1.ChangeDutyCycle(0)
-        pwm2.ChangeDutyCycle(0)
+        # pwm2.ChangeDutyCycle(0)
 
     def alterarPWM(self, valor):
         global pwm1
-        global pwm2
+        global pinoMotorA1
+        # global pwm2
         self.valorPWMAtual = valor
         # print("Sentido ",self.sentidoFrente)
         if (self.sentidoFrente):
             pwm1.ChangeDutyCycle(valor)
+            desligaPorta(pinoMotorA1)
         else:
-            pwm2.ChangeDutyCycle(valor)
+            pwm1.ChangeDutyCycle(valor)
+            ligaPorta(pinoMotorA1)
 
     def aceleracao(self):
         for i in range(0, 100, 1):
@@ -184,20 +188,23 @@ class MotorEsquerda():
         print("PWM " + str(self.valorPWMAtual) + " RPM " + str(self.rpm))
 
     def zerarValores(self):
-        global pwm1
+        # global pwm1
         global pwm2
-        pwm1.ChangeDutyCycle(0)
         pwm2.ChangeDutyCycle(0)
+        # pwm2.ChangeDutyCycle(0)
 
     def alterarPWM(self, valor):
-        global pwm1
+        # global pwm1
+        global pinoMotorB1
         global pwm2
         self.valorPWMAtual = valor
         # print("Sentido ",self.sentidoFrente)
         if (self.sentidoFrente):
-            pwm1.ChangeDutyCycle(valor)
+            pwm2.ChangeDutyCycle(valor)
+            desligaPorta(pinoMotorB1)
         else:
             pwm2.ChangeDutyCycle(valor)
+            ligaPorta(pinoMotorB1)
 
     def aceleracao(self):
         for i in range(0, 100, 1):
