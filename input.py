@@ -21,8 +21,8 @@ width, height = 1280, 1000
 # screen=pygame.display.set_mode((width, height))
 
 pinoMotorA = 18
-pinoMotorA1 = 22 #marrom
-pinoMotorA2 = 4 #preto
+pinoMotorA1 = 4 #marrom
+pinoMotorA2 = 22 #preto
 pinoMotorB = 13
 pinoMotorB1 = 12 #verde
 pinoMotorB2 = 16 #amarelo
