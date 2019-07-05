@@ -351,10 +351,14 @@ try:
             sentido(True)
             print('tras')
         elif c == ord('a'):
-            esquerda()
+            # esquerda()
+            sentidoMotor(MotorEsquerda(),False,pwmBglobal)
+            sentidoMotor(MotorDireita(),False,pwmAglobal)
             print('esquerda')
         elif c == ord('d'):
-            direita()
+            # direita()
+            sentidoMotor(MotorEsquerda(),True,pwmBglobal)
+            sentidoMotor(MotorDireita(),True,pwmAglobal)
             print('direita')
         elif c == ord('8'):
             avancar()
