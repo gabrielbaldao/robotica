@@ -344,11 +344,11 @@ try:
             # avancar()
             print(pwmAglobal)
             print(pwmBglobal)
-            sentido(True)
+            sentido(False)
             print('frente')
         elif c == ord('s'):
             # voltar()
-            sentido(False)
+            sentido(True)
             print('tras')
         elif c == ord('a'):
             esquerda()
