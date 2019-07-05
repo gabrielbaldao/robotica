@@ -1,4 +1,5 @@
 import curses
+# import wiringpi2 as wiringpi  
 
 import RPi.GPIO as GPIO
 # from threading import Thread
@@ -8,6 +9,8 @@ import time
 # import pygame
 # from pygame.locals import *
 
+GPIO.cleanup()  
+# wiringpi.wiringPiSetupGpio()  
 
 # pygame.init()
 GPIO.setmode(GPIO.BCM)
@@ -17,44 +20,52 @@ GPIO.setwarnings(False)
 width, height = 1280, 1000
 # screen=pygame.display.set_mode((width, height))
 
-pinoMotorA = 17
+pinoMotorA = 18
 pinoMotorA1 = 22
-pinoMotorB = 18
-pinoMotorB1 = 23
-
-pwmAglobal = 50
-pwmBglobal = 50
+pinoMotorA2 = 27
+pinoMotorB = 13
+pinoMotorB1 = 12
+pinoMotorB2 = 16
+pwmAglobal = 100
+pwmBglobal = 100
 
 frequencia = 1000
 
 GPIO.setup(pinoMotorA, GPIO.OUT)
 GPIO.setup(pinoMotorA1, GPIO.OUT)
+GPIO.setup(pinoMotorA2, GPIO.OUT)
 GPIO.setup(pinoMotorB, GPIO.OUT)
 GPIO.setup(pinoMotorB1, GPIO.OUT)
-
+GPIO.setup(pinoMotorB2, GPIO.OUT)
+GPIO.setup(26,GPIO.OUT)
+# wiringpi.pinMode(pinoMotorA, 2)
+# wiringpi.pinMode(pinoMotorA1, 1)
+# wiringpi.pinMode(pinoMotorA2, 1)
+# wiringpi.pinMode(pinoMotorB,2)
+# wiringpi.pinMode(pinoMotorB1, 1)
+# wiringpi.pinMode(pinoMotorB2, 1)
+GPIO.output(26,GPIO.HIGH)
 pwm1 = GPIO.PWM(pinoMotorA, frequencia)
-pwm2 = GPIO.PWM(pinoMotorA1, frequencia)
+pwm2 = GPIO.PWM(pinoMotorB, frequencia)
 pwm1.start(0)
 pwm2.start(0)
 
 
 
-def ligaPorta(porta):
-    GPIO.output(porta, GPIO.HIGH)
-
-def desligaPorta(porta):
-    GPIO.output(porta, GPIO.LOW)
 
 
-desligaPorta(pinoMotorA1)
-desligaPorta(pinoMotorB1)
+
+GPIO.output(pinoMotorA1,0)
+GPIO.output(pinoMotorB1,0)
+
+GPIO.output(pinoMotorA2,0)
+GPIO.output(pinoMotorB2,0)
 
 
 
 class MotorDireita():
     motor = None
     sentidoFrente = False
-    rpm = 0
     valorPWMAtual = 0
     emMovimento = False
 
@@ -68,80 +79,64 @@ class MotorDireita():
 
     def iniciar(self):
         self.sentidoFrente = False
-        self.rpm = 0
         self.zerarValores()
         self.valorPWMAtual = 0
         self.emMovimento = False
 
 
+
     def sentido(self, booleano):
         if (booleano != self.sentidoFrente):
+            self.sentidoFrente = booleano
             if (self.emMovimento):
                 self.frenagem()
-                print("freiou")
-            else:
-                print("aceleracao")
-                # self.aceleracao()
+            self.aceleracao()
         else:
             print("Sentido j? inicializado")
-        self.sentidoFrente = booleano
 
     def setMovimento(self, valor):
         self.emMovimento = valor
-    def alterarRPM(self, valor, tagDestino):
-        print("saiu for")
-        # time.sleep(10)
-        print("vai while")
-        while self.rpm < valor and self.valorPWMAtual < 100  :
-            print(self.valorPWMAtual)
-            self.valorPWMAtual += 1
-            self.alterarPWM(self.valorPWMAtual)
-            time.sleep(0.1)
-
-        print("PWM " + str(self.valorPWMAtual) + " RPM " + str(self.rpm))
 
     def zerarValores(self):
-        global pwm1
-        # global pwm2
-        pwm1.ChangeDutyCycle(0)
-        # pwm2.ChangeDutyCycle(0)
-
-    def alterarPWM(self, valor):
+        # global pwm1
         global pwm1
         global pinoMotorA1
-        # global pwm2
-        self.valorPWMAtual = valor
-        # print("Sentido ",self.sentidoFrente)
-        if (self.sentidoFrente):
-            pwm1.ChangeDutyCycle(valor)
-            desligaPorta(pinoMotorA1)
-        else:
-            pwm1.ChangeDutyCycle(valor)
-            ligaPorta(pinoMotorA1)
+        global pinoMotorA2
+        GPIO.output(pinoMotorA1, 1)
+        GPIO.output(pinoMotorA2, 1)
+        pwm1.ChangeDutyCycle(0)
 
+        # pwm1.ChangeDutyCycle(0)
+
+    def alterarPWM(self, valor):
+        # global pwm1
+        global pinoMotorA1
+        global pinoMotorA2
+        global pwm1
+        self.valorPWMAtual = valor
+        pwm1.ChangeDutyCycle(valor)
+        if (self.sentidoFrente):
+            self.ligaPorta(pinoMotorA2)
+            self.desligaPorta(pinoMotorA1)
+        else:
+            self.ligaPorta(pinoMotorA1)
+            self.desligaPorta(pinoMotorA2)
+    def ligaPorta(self, porta):
+
+        GPIO.output(porta, GPIO.HIGH)
+
+    def desligaPorta(self, porta):
+        GPIO.output(porta, GPIO.LOW)
     def aceleracao(self):
         for i in range(0, 100, 1):
             self.alterarPWM(i)
             time.sleep(0.001)
 
     def frenagem(self):
-        for i in range(int(self.valorPWMAtual), 0, -1):
-            self.alterarPWM(i)
-            time.sleep(0.001)
-            self.zerarValores()
-    def pausar(self):
-        MotorDireita().alterarPWM(0)
-    def continuar(self):
-        global pwmAglobal
-        if(self.emMovimento):
-            print("pwm ligando ", pwmAglobal)
-            MotorDireita().aceleracao()
-            MotorDireita().alterarPWM(pwmAglobal)
-
+        self.zerarValores()
 class MotorEsquerda():
     motor = None
     sentidoFrente = False
-    rpm = 0
     valorPWMAtual = 0
     emMovimento = False
 
@@ -155,77 +150,63 @@ class MotorEsquerda():
 
     def iniciar(self):
         self.sentidoFrente = False
-        self.rpm = 0
         self.zerarValores()
         self.valorPWMAtual = 0
         self.emMovimento = False
 
 
+
     def sentido(self, booleano):
         if (booleano != self.sentidoFrente):
+            self.sentidoFrente = booleano
             if (self.emMovimento):
                 self.frenagem()
-                print("freiou")
-            else:
-                print("aceleracao")
-                # self.aceleracao()
+            self.aceleracao()
         else:
             print("Sentido j? inicializado")
-        self.sentidoFrente = booleano
 
     def setMovimento(self, valor):
         self.emMovimento = valor
-    def alterarRPM(self, valor, tagDestino):
-        print("saiu for")
-        # time.sleep(10)
-        print("vai while")
-        while self.rpm < valor and self.valorPWMAtual < 100  :
-            print(self.valorPWMAtual)
-            self.valorPWMAtual += 1
-            self.alterarPWM(self.valorPWMAtual)
-            time.sleep(0.1)
-
-        print("PWM " + str(self.valorPWMAtual) + " RPM " + str(self.rpm))
 
     def zerarValores(self):
         # global pwm1
         global pwm2
+        global pinoMotorB1
+        global pinoMotorB2
+        GPIO.output(pinoMotorB1, 1)
+        GPIO.output(pinoMotorB2, 1)
         pwm2.ChangeDutyCycle(0)
+
         # pwm2.ChangeDutyCycle(0)
 
     def alterarPWM(self, valor):
         # global pwm1
         global pinoMotorB1
+        global pinoMotorB2
         global pwm2
         self.valorPWMAtual = valor
-        # print("Sentido ",self.sentidoFrente)
+        pwm2.ChangeDutyCycle(valor)
         if (self.sentidoFrente):
-            pwm2.ChangeDutyCycle(valor)
-            desligaPorta(pinoMotorB1)
+            self.desligaPorta(pinoMotorB1)
+            self.ligaPorta(pinoMotorB2)
         else:
-            pwm2.ChangeDutyCycle(valor)
-            ligaPorta(pinoMotorB1)
+            self.ligaPorta(pinoMotorB1)
+            self.desligaPorta(pinoMotorB2)
+    def ligaPorta(self,porta):
+        GPIO.output(porta, GPIO.HIGH)
 
+    def desligaPorta(self,porta):
+        GPIO.output(porta, GPIO.LOW)
     def aceleracao(self):
         for i in range(0, 100, 1):
             self.alterarPWM(i)
             time.sleep(0.001)
 
     def frenagem(self):
-        for i in range(int(self.valorPWMAtual), 0, -1):
-            self.alterarPWM(i)
-            time.sleep(0.001)
-            self.zerarValores()
-    def pausar(self):
-        MotorEsquerda().alterarPWM(0)
-    def continuar(self):
-        global pwmAglobal
-        if(self.emMovimento):
-            print("pwm ligando ", pwmAglobal)
-            MotorEsquerda().aceleracao()
-            MotorEsquerda().alterarPWM(pwmAglobal)
+        self.zerarValores()
 
-MotorDireita().iniciar()
+
+# MotorDireita().iniciar()
 MotorEsquerda().iniciar()
 
 esquerdaContador = 1
@@ -240,18 +221,22 @@ def avancar():
     global pwmAglobal, pwmBglobal
     if pwmAglobal < 100:
         pwmAglobal+=5
+        MotorDireita().aceleracao()
         MotorDireita().alterarPWM(pwmAglobal)
     if pwmBglobal < 100:
         pwmBglobal+=5
+        MotorEsquerda().aceleracao()
         MotorEsquerda().alterarPWM(pwmBglobal)
 
 def voltar():
     global pwmAglobal, pwmBglobal
     if pwmAglobal > 0:
         pwmAglobal-=5
+        MotorDireita().aceleracao()
         MotorDireita().alterarPWM(pwmAglobal)
     if pwmBglobal > 0:
         pwmBglobal-=5
+        MotorEsquerda().aceleracao()
         MotorEsquerda().alterarPWM(pwmBglobal)
 
 def esquerda():
@@ -293,8 +278,9 @@ def para():
 
 def sentido(var):
     global pwmAglobal, pwmBglobal
-    sentidoMotor(MotorDireita(), var, pwmAglobal)
     sentidoMotor(MotorEsquerda(), not var, pwmBglobal)
+    sentidoMotor(MotorDireita(), var, pwmAglobal)
+    
     # MotorDireita().sentido(var)
     # MotorDireita().aceleracao()
     # MotorDireita().alterarPWM(pwmBglobal)
@@ -305,71 +291,81 @@ def sentido(var):
     # MotorEsquerda().alterarPWM(pwmBglobal)
     # MotorEsquerda().setMovimento(True)
 def sentidoMotor(motor, var, pwm):
-    motor.sentido(not var)
+    motor.sentido(var)
     motor.aceleracao()
     motor.alterarPWM(pwm)
     motor.setMovimento(True)
 
 
-MotorEsquerda().aceleracao()
-MotorDireita().aceleracao()
+# MotorEsquerda().aceleracao()
+# MotorDireita().aceleracao()
 
 
-while True:
-    print("Inicio do while")
-    time.sleep(2)
+#while True:
+#    print("Inicio do while")
+#    time.sleep(2)
 
 
-# try:
-#     stdscr = curses.initscr()
-#     curses.cbreak()
-#     curses.noecho()
-#     stdscr.keypad(1)
-#     stdscr.refresh()
-#     while 1:
-#         screen.fill(1)
-#         # for event in pygame.event.get():
-#         #     if event.type == pygame.KEYDOWN:
-#         #         if event.key == K_w:
-#         #             print("Botao de keydown")
-#         #     if event.type == pygame.KEYUP:
-#         #         if event.ke == K_w:
-#         #             print("Evento de key up")
-#         c = stdscr.getch()
-#         if c == ord('w'):
-#             # avancar()
-#             print(pwmAglobal)
-#             print(pwmBglobal)
-#             sentido(True)
-#             print('frente')
-#         elif c == ord('s'):
-#             # voltar()
-#             sentido(False)
-#             print('tras')
-#         elif c == ord('a'):
-#             esquerda()
-#             print('esquerda')
-#         elif c == ord('d'):
-#             direita()
-#             print('direita')
-#         elif c == ord('8'):
-#             avancar()
-#             print('aumenta PWM')
-#         elif c == ord('2'):
-#             voltar()
-#             print('diminui PWM')
-#         elif c == ord('e'):
 
-#             print('para')
-#         elif c == ord('q'):
-#             exit(0)
-#         else:
-#             print('Comando desconhecido')
+try:
+    stdscr = curses.initscr()
+    curses.cbreak()
+    curses.noecho()
+    stdscr.keypad(1)
+    stdscr.refresh()
+    while 1:
+        # for event in pygame.event.get():
+        #     if event.type == pygame.KEYDOWN:
+        #         if event.key == K_w:
+        #             print("Botao de keydown")
+        #     if event.type == pygame.KEYUP:
+        #         if event.ke == K_w:
+        #             print("Evento de key up")
+        c = stdscr.getch()
+        print(" ")
+        if c == ord('y'):
+            print('y')
+            MotorEsquerda().aceleracao()
+        elif c == ord('u'):
+            MotorDireita().aceleracao()
+        elif c == ord('i'):
+            MotorDireita().frenagem()
+        elif c == ord('o'):
+            MotorEsquerda().frenagem()
+        elif c == ord('w'):
+            # avancar()
+            print(pwmAglobal)
+            print(pwmBglobal)
+            sentido(True)
+            print('frente')
+        elif c == ord('s'):
+            # voltar()
+            sentido(False)
+            print('tras')
+        elif c == ord('a'):
+            esquerda()
+            print('esquerda')
+        elif c == ord('d'):
+            direita()
+            print('direita')
+        elif c == ord('8'):
+            avancar()
+            print('aumenta PWM')
+        elif c == ord('2'):
+            voltar()
+            print('diminui PWM')
+        elif c == ord('e'):
 
-# finally:
-#     curses.nocbreak()
-#     stdscr.keypad(0)
-#     curses.echo()
-#     curses.endwin()
+            print('para')
+        elif c == ord('q'):
+            exit(0)
+        else:
+            print('Comando desconhecido')
+
+finally:
+    curses.nocbreak()
+    stdscr.keypad(0)
+    curses.echo()
+    curses.endwin()
 
 
