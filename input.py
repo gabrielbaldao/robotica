@@ -317,6 +317,7 @@ try:
     stdscr.keypad(1)
     stdscr.refresh()
     while 1:
+        print("\n")
         # for event in pygame.event.get():
         #     if event.type == pygame.KEYDOWN:
         #         if event.key == K_w:
