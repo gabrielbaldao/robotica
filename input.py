@@ -116,18 +116,19 @@ class MotorDireita():
         self.valorPWMAtual = valor
         pwm1.ChangeDutyCycle(valor)
         if (self.sentidoFrente):
-            print("Sentido frente verdadeiro")
             self.ligaPorta(pinoMotorA2)
+            
             self.desligaPorta(pinoMotorA1)
         else:
-            print("Sentido frente falso")
             self.ligaPorta(pinoMotorA1)
             self.desligaPorta(pinoMotorA2)
     def ligaPorta(self, porta):
-
+        print("\nLiga ", porta)
+        global GPIO
         GPIO.output(porta, GPIO.HIGH)
 
     def desligaPorta(self, porta):
+        global GPIO
         GPIO.output(porta, GPIO.LOW)
     def aceleracao(self):
         for i in range(0, 100, 1):
@@ -195,9 +196,12 @@ class MotorEsquerda():
             self.ligaPorta(pinoMotorB1)
             self.desligaPorta(pinoMotorB2)
     def ligaPorta(self,porta):
+        global GPIO
+        print("\nLiga: ",porta)
         GPIO.output(porta, GPIO.HIGH)
 
     def desligaPorta(self,porta):
+        global GPIO
         GPIO.output(porta, GPIO.LOW)
     def aceleracao(self):
         for i in range(0, 100, 1):
