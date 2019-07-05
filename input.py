@@ -22,7 +22,7 @@ width, height = 1280, 1000
 
 pinoMotorA = 18
 pinoMotorA1 = 22 #marrom
-pinoMotorA2 = 27 #preto
+pinoMotorA2 = 4 #preto
 pinoMotorB = 13
 pinoMotorB1 = 12 #verde
 pinoMotorB2 = 16 #amarelo
