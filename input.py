@@ -123,7 +123,7 @@ class MotorDireita():
             self.ligaPorta(pinoMotorA1)
             self.desligaPorta(pinoMotorA2)
     def ligaPorta(self, porta):
-        #print("\nLiga ", porta)
+        print("\nLiga ", porta)
         global GPIO
         GPIO.output(porta, GPIO.HIGH)
 
@@ -197,7 +197,7 @@ class MotorEsquerda():
             self.desligaPorta(pinoMotorB2)
     def ligaPorta(self,porta):
         global GPIO
-        #print("\nLiga: ",porta)
+        print("\nLiga: ",porta)
         GPIO.output(porta, GPIO.HIGH)
 
     def desligaPorta(self,porta):
@@ -297,7 +297,7 @@ def sentido(var):
     # MotorEsquerda().alterarPWM(pwmBglobal)
     # MotorEsquerda().setMovimento(True)
 def sentidoMotor(motor, var, pwm):
-    #print("Sentido motor ", var)
+    print("Sentido motor ", var)
     motor.sentido(var)
     motor.aceleracao()
     motor.alterarPWM(pwm)
@@ -309,7 +309,7 @@ def sentidoMotor(motor, var, pwm):
 
 
 #while True:
-#    #print("Inicio do while")
+#    print("Inicio do while")
 #    time.sleep(2)
 
 
@@ -321,19 +321,18 @@ try:
     stdscr.keypad(1)
     stdscr.refresh()
     while 1:
-        
+        print("\n")
         # for event in pygame.event.get():
         #     if event.type == pygame.KEYDOWN:
         #         if event.key == K_w:
-        #             #print("Botao de keydown")
+        #             print("Botao de keydown")
         #     if event.type == pygame.KEYUP:
         #         if event.ke == K_w:
-        #             #print("Evento de key up")
+        #             print("Evento de key up")
         c = stdscr.getch()
-        print("\n.")
-        #print(" ")
+        print(" ")
         if c == ord('y'):
-            #print('y')
+            print('y')
             MotorEsquerda().aceleracao()
         elif c == ord('u'):
             MotorDireita().aceleracao()
@@ -343,33 +342,33 @@ try:
             MotorEsquerda().frenagem()
         elif c == ord('w'):
             # avancar()
-            #print(pwmAglobal)
-            #print(pwmBglobal)
+            print(pwmAglobal)
+            print(pwmBglobal)
             sentido(True)
-            #print('frente')
+            print('frente')
         elif c == ord('s'):
             # voltar()
             sentido(False)
-            #print('tras')
+            print('tras')
         elif c == ord('a'):
             esquerda()
-            #print('esquerda')
+            print('esquerda')
         elif c == ord('d'):
             direita()
-            #print('direita')
+            print('direita')
         elif c == ord('8'):
             avancar()
-            #print('aumenta PWM')
+            print('aumenta PWM')
         elif c == ord('2'):
             voltar()
-            #print('diminui PWM')
+            print('diminui PWM')
         elif c == ord('e'):
 
-            #print('para')
+            print('para')
         elif c == ord('q'):
             exit(0)
         else:
-            #print('Comando desconhecido')
+            print('Comando desconhecido')
 
 finally:
     curses.nocbreak()
