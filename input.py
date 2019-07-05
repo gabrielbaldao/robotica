@@ -21,11 +21,11 @@ width, height = 1280, 1000
 # screen=pygame.display.set_mode((width, height))
 
 pinoMotorA = 18
-pinoMotorA1 = 22
-pinoMotorA2 = 27
+pinoMotorA1 = 22 #marrom
+pinoMotorA2 = 27 #preto
 pinoMotorB = 13
-pinoMotorB1 = 12
-pinoMotorB2 = 16
+pinoMotorB1 = 12 #verde
+pinoMotorB2 = 16 #amarelo
 pwmAglobal = 100
 pwmBglobal = 100
 
@@ -116,9 +116,11 @@ class MotorDireita():
         self.valorPWMAtual = valor
         pwm1.ChangeDutyCycle(valor)
         if (self.sentidoFrente):
+            print("Sentido frente verdadeiro")
             self.ligaPorta(pinoMotorA2)
             self.desligaPorta(pinoMotorA1)
         else:
+            print("Sentido frente falso")
             self.ligaPorta(pinoMotorA1)
             self.desligaPorta(pinoMotorA2)
     def ligaPorta(self, porta):
@@ -291,6 +293,7 @@ def sentido(var):
     # MotorEsquerda().alterarPWM(pwmBglobal)
     # MotorEsquerda().setMovimento(True)
 def sentidoMotor(motor, var, pwm):
+    print("Sentido motor ", var)
     motor.sentido(var)
     motor.aceleracao()
     motor.alterarPWM(pwm)
