@@ -380,9 +380,8 @@ try:
                 print('Comando desconhecido')
 
 finally:
+    print('Fim')
     # curses.nocbreak()
     # stdscr.keypad(0)
     # curses.echo()
     # curses.endwin()
-
-
