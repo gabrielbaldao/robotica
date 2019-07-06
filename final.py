@@ -351,8 +351,10 @@ def on_press(key):
             elif c == 'a':
                 # esquerda()
                 sentidoMotor(MotorEsquerda(), not(MotorEsquerda().sentidoFrente), pwmBglobal)
+                sentidoMotor(MotorDireita(), MotorDireita().sentidoFrente, pwmBglobal)
             elif c == 'd':
                 # direita()
+                sentidoMotor(MotorEsquerda(), MotorEsquerda().sentidoFrente, pwmBglobal)
                 sentidoMotor(MotorDireita(), not(MotorDireita().sentidoFrente), pwmBglobal)
 
             elif c == '8':
@@ -389,12 +391,16 @@ def on_release(key):
             MotorEsquerda().frenagem()
 
         elif c == 'a':
-            sentidoMotor(MotorEsquerda(), not(MotorEsquerda().sentidoFrente), pwmBglobal)
+            # sentidoMotor(MotorEsquerda(), not(MotorEsquerda().sentidoFrente), pwmBglobal)
+            MotorDireita().frenagem()
+            MotorEsquerda().frenagem()
             # esquerda()
             # sentido(False)
             
         elif c == 'd':
-            sentidoMotor(MotorDireita(), not(MotorDireita().sentidoFrente), pwmBglobal)
+            # sentidoMotor(MotorDireita(), not(MotorDireita().sentidoFrente), pwmBglobal)
+            MotorDireita().frenagem()
+            MotorEsquerda().frenagem()
         if key.char == lastKey:
             lastKey = ""
         print('{0} released'.format(
