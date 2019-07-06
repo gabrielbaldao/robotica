@@ -107,6 +107,7 @@ class MotorDireita():
         GPIO.output(pinoMotorA1, 1)
         GPIO.output(pinoMotorA2, 1)
         pwm1.ChangeDutyCycle(0)
+        self.emMovimento = False
 
         # pwm1.ChangeDutyCycle(0)
 
@@ -133,6 +134,7 @@ class MotorDireita():
         global GPIO
         GPIO.output(porta, GPIO.LOW)
     def aceleracao(self):
+        self.emMovimento = True
         for i in range(0, 100, 1):
             self.alterarPWM(i)
             time.sleep(0.001)
@@ -181,6 +183,7 @@ class MotorEsquerda():
         GPIO.output(pinoMotorB1, 1)
         GPIO.output(pinoMotorB2, 1)
         pwm2.ChangeDutyCycle(0)
+        self.emMovimento = False
 
         # pwm2.ChangeDutyCycle(0)
 
@@ -206,6 +209,7 @@ class MotorEsquerda():
         global GPIO
         GPIO.output(porta, GPIO.LOW)
     def aceleracao(self):
+        self.emMovimento = True
         for i in range(0, 100, 1):
             self.alterarPWM(i)
             time.sleep(0.001)
@@ -336,24 +340,21 @@ def on_press(key):
                 MotorEsquerda().frenagem()
             elif c == 'w':
                 # avancar()
-                print(pwmAglobal)
-                print(pwmBglobal)
+                # print(pwmAglobal)
+                # print(pwmBglobal)
                 sentido(False)
-                print('frente')
+                # print('frente')
             elif c == 's':
                 # voltar()
                 sentido(True)
-                print('tras')
+
             elif c == 'a':
                 # esquerda()
-                sentidoMotor(MotorEsquerda(),False,pwmBglobal)
-                sentidoMotor(MotorDireita(),False,pwmAglobal)
-                print('esquerda')
+                sentidoMotor(MotorEsquerda(), not(MotorEsquerda().sentidoFrente), pwmBglobal)
             elif c == 'd':
                 # direita()
-                sentidoMotor(MotorEsquerda(),True,pwmBglobal)
-                sentidoMotor(MotorDireita(),True,pwmAglobal)
-                print('direita')
+                sentidoMotor(MotorDireita(), not(MotorDireita().sentidoFrente), pwmBglobal)
+
             elif c == '8':
                 avancar()
                 print('aumenta PWM')
@@ -377,6 +378,23 @@ def on_release(key):
         if key == keyboard.Key.esc:
             # Stop listener
             return False
+        c = key.char
+    
+        if c == 'w':
+            MotorDireita().frenagem()
+            MotorEsquerda().frenagem()
+
+        elif c == 's':
+            MotorDireita().frenagem()
+            MotorEsquerda().frenagem()
+
+        elif c == 'a':
+            sentidoMotor(MotorEsquerda(), not(MotorEsquerda().sentidoFrente), pwmBglobal)
+            # esquerda()
+            # sentido(False)
+            
+        elif c == 'd':
+            sentidoMotor(MotorDireita(), not(MotorDireita().sentidoFrente), pwmBglobal)
         if key.char == lastKey:
             lastKey = ""
         print('{0} released'.format(
