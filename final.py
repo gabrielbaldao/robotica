@@ -350,12 +350,12 @@ def on_press(key):
 
             elif c == 'a':
                 # esquerda()
-                sentidoMotor(MotorEsquerda(), not(MotorEsquerda().sentidoFrente), pwmBglobal)
-                sentidoMotor(MotorDireita(), MotorDireita().sentidoFrente, pwmBglobal)
+                sentidoMotor(MotorEsquerda(), False, pwmBglobal)
+                sentidoMotor(MotorDireita(), False, pwmBglobal)
             elif c == 'd':
                 # direita()
-                sentidoMotor(MotorEsquerda(), MotorEsquerda().sentidoFrente, pwmBglobal)
-                sentidoMotor(MotorDireita(), not(MotorDireita().sentidoFrente), pwmBglobal)
+                sentidoMotor(MotorEsquerda(), True, pwmBglobal)
+                sentidoMotor(MotorDireita(), True, pwmBglobal)
 
             elif c == '8':
                 avancar()
