@@ -5,7 +5,7 @@ import RPi.GPIO as GPIO
 # from threading import Thread
 # import _thread
 import time
-from kbhit import KBHit
+
 # import pygame
 # from pygame.locals import *
 
@@ -315,13 +315,12 @@ def sentidoMotor(motor, var, pwm):
 
 
 try:
-    # stdscr = curses.initscr()
-    # curses.cbreak()
-    # curses.noecho()
-    # stdscr.keypad(1)
-    # stdscr.refresh()
+    stdscr = curses.initscr()
+    curses.cbreak()
+    curses.noecho()
+    stdscr.keypad(1)
+    stdscr.refresh()
     while 1:
-        print("\n")
         # for event in pygame.event.get():
         #     if event.type == pygame.KEYDOWN:
         #         if event.key == K_w:
@@ -329,59 +328,55 @@ try:
         #     if event.type == pygame.KEYUP:
         #         if event.ke == K_w:
         #             print("Evento de key up")
-        # c = stdscr.getch()
-        kb = KBHit()
-        if kb.kbhit():
-            c = kb.getch()
-        # print(" ")
-
-            if c == ('y'):
-                # print('y')
-                MotorEsquerda().aceleracao()
-            elif c == ('u'):
-                MotorDireita().aceleracao()
-            elif c == ('i'):
-                MotorDireita().frenagem()
-            elif c == ('o'):
-                MotorEsquerda().frenagem()
-            elif c == ('w'):
-                # avancar()
-                print(pwmAglobal)
-                print(pwmBglobal)
-                sentido(False)
-                print('frente')
-            elif c == ('s'):
-                # voltar()
-                sentido(True)
-                print('tras')
-            elif c == ('a'):
-                # esquerda()
-                sentidoMotor(MotorEsquerda(),False,pwmBglobal)
-                sentidoMotor(MotorDireita(),False,pwmAglobal)
-                print('esquerda')
-            elif c == ('d'):
-                # direita()
-                sentidoMotor(MotorEsquerda(),True,pwmBglobal)
-                sentidoMotor(MotorDireita(),True,pwmAglobal)
-                print('direita')
-            elif c == ('8'):
-                avancar()
-                print('aumenta PWM')
-            elif c == ('2'):
-                voltar()
-                print('diminui PWM')
-            elif c == ('e'):
-                MotorDireita().frenagem()
-                MotorEsquerda().frenagem()
-                print('para')
-            elif c == ('q'):
-                exit(0)
-            else:
-                print('Comando desconhecido')
+        c = stdscr.getch()
+        if c == ord('y'):
+            print('y')
+            MotorEsquerda().aceleracao()
+        elif c == ord('u'):
+            MotorDireita().aceleracao()
+        elif c == ord('i'):
+            MotorDireita().frenagem()
+        elif c == ord('o'):
+            MotorEsquerda().frenagem()
+        elif c == ord('w'):
+            # avancar()
+            print(pwmAglobal)
+            print(pwmBglobal)
+            sentido(False)
+            print('frente')
+        elif c == ord('s'):
+            # voltar()
+            sentido(True)
+            print('tras')
+        elif c == ord('a'):
+            # esquerda()
+            sentidoMotor(MotorEsquerda(),False,pwmBglobal)
+            sentidoMotor(MotorDireita(),False,pwmAglobal)
+            print('esquerda')
+        elif c == ord('d'):
+            # direita()
+            sentidoMotor(MotorEsquerda(),True,pwmBglobal)
+            sentidoMotor(MotorDireita(),True,pwmAglobal)
+            print('direita')
+        elif c == ord('8'):
+            avancar()
+            print('aumenta PWM')
+        elif c == ord('2'):
+            voltar()
+            print('diminui PWM')
+        elif c == ord('e'):
+            MotorDireita().frenagem()
+            MotorEsquerda().frenagem()
+            print('para')
+        elif c == ord('q'):
+            exit(0)
+        else:
+            print('Comando desconhecido')
 
 finally:
-    print('Fim')
-    # curses.nocbreak()
-    # stdscr.keypad(0)
-    # curses.echo()
-    # curses.endwin()
+    curses.nocbreak()
+    stdscr.keypad(0)
+    curses.echo()
+    curses.endwin()
+
+
