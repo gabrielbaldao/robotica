@@ -363,6 +363,9 @@ def on_press(key):
             elif c == 'e':
                 MotorDireita().frenagem()
                 MotorEsquerda().frenagem()
+            elif c == 'q':
+                GPIO.cleanup()
+                exit(1)
 
     except AttributeError:
         print('special key {0} pressed'.format(
@@ -371,13 +374,14 @@ def on_press(key):
 def on_release(key):
     global lastKey
     try:
+        if key == keyboard.Key.esc:
+            # Stop listener
+            return False
         if key.char == lastKey:
             lastKey = ""
         print('{0} released'.format(
             key))
-        if key == keyboard.Key.esc:
-            # Stop listener
-            return False
+        
     except AttributeError:
         print('special key {0} pressed'.format(
             key))
